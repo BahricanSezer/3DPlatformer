@@ -3,12 +3,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Referanslar")]
-    public DashSystem dashSystem; // Yeni scripti buraya bağlayacağız
+    public DashSystem dashSystem;
+    public JumpSystem jumpSystem;
     public Transform cam;
+    public Animator animator; // Animator'ı buraya sürükleyeceksin
 
     [Header("Hareket Ayarları")]
     public float moveSpeed = 6f;
-    public float jumpForce = 7f;
     public float diveSpeed = 50f;
     public float turnSmoothTime = 0.1f;
 
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
     private bool isGrounded;
+    private bool wasGrounded;
     private float turnSmoothVelocity;
 
     private float horizontal;
@@ -34,6 +36,8 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
 
         if (cam == null) cam = Camera.main.transform;
+        // Eğer inspector'dan atamazsan otomatik bulsun
+        if (animator == null) animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -42,9 +46,10 @@ public class PlayerController : MonoBehaviour
         vertical = Input.GetAxisRaw("Vertical");
 
         if (Input.GetKeyDown(KeyCode.Space)) jumpRequest = true;
-
-        // Sadece tuşa basıldığını kaydediyoruz, stamina kontrolünü fizikte yapacağız
         if (Input.GetMouseButtonDown(1)) diveRequest = true;
+
+        // --- ANİMASYON GÜNCELLEMELERİ (Update içinde yapılmalı) ---
+        UpdateAnimations();
     }
 
     void FixedUpdate()
@@ -68,35 +73,63 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
         }
 
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
+        CheckGroundStatus();
 
         if (jumpRequest)
         {
             if (isGrounded)
             {
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                if (jumpSystem != null) jumpSystem.ApplyJump(rb);
+                animator.SetTrigger("Jump"); // Zıplama animasyonu tetikle
             }
             jumpRequest = false;
         }
 
         if (diveRequest)
         {
-            // Önce DashSystem'e soruyoruz: Stamina var mı?
             if (dashSystem != null && dashSystem.CheckAndConsumeStamina())
             {
-                Vector3 dashDirection = transform.forward;
+                animator.SetTrigger("Dash"); // Dash animasyonu tetikle
 
+                Vector3 dashDirection = transform.forward;
                 if (direction.magnitude >= 0.1f)
                 {
                     dashDirection = moveDir;
                 }
-
                 rb.linearVelocity = dashDirection * diveSpeed + Vector3.up * 3f;
             }
-
-            // Stamina olsa da olmasa da isteği sıfırlıyoruz ki takılı kalmasın
             diveRequest = false;
         }
+    }
+
+    void CheckGroundStatus()
+    {
+        wasGrounded = isGrounded;
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
+
+        if (!wasGrounded && isGrounded)
+        {
+            if (jumpSystem != null) jumpSystem.SpawnLandingEffect();
+            // İniş animasyonu için trigger gerekmez, IsGrounded true olunca BlendTree'ye döner
+        }
+    }
+
+    void UpdateAnimations()
+    {
+        if (animator == null) return;
+
+        // 1. Yatay Hız Hesaplama (Y eksenini yoksayarak)
+        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+        float currentSpeed = horizontalVelocity.magnitude;
+
+        // 2. Blend Tree için Speed parametresi (0 ile 1 arası geçiş yapsın diye DampTime kullanıyoruz)
+        // 0.1f, animasyonun ne kadar sürede geçiş yapacağıdır (Smoothness)
+        animator.SetFloat("Speed", currentSpeed, 0.1f, Time.deltaTime);
+
+        // 3. Havada olma durumu
+        animator.SetBool("IsGrounded", isGrounded);
+
+        // 4. Dikey Hız (Zıplamadan Düşüşe geçiş için)
+        animator.SetFloat("VerticalVelocity", rb.linearVelocity.y);
     }
 }
