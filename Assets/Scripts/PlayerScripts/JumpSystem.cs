@@ -10,6 +10,11 @@ public class JumpSystem : MonoBehaviour
     {
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.PlaySFXRandomPitch(AudioManager.instance.jumpClip);
+        }
     }
 
     public void SpawnLandingEffect()
