@@ -48,5 +48,14 @@ public class RespawnSystem : MonoBehaviour
         {
             AudioManager.instance.PlaySFX(AudioManager.instance.deathClip);
         }
+
+        // Sahnedeki tüm FallingPlatform scriptlerini bul (Gizli olanlar dahil "true")
+        FallingPlatform[] platforms = FindObjectsOfType<FallingPlatform>(true);
+
+        // Hepsine tek tek "Kendini sıfırla" emri ver
+        foreach (FallingPlatform platform in platforms)
+        {
+            platform.ResetPlatform();
+        }
     }
 }
