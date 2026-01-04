@@ -3,8 +3,8 @@ using UnityEngine;
 public class JumpSystem : MonoBehaviour
 {
     public float jumpForce = 7f;
-    public GameObject landingParticlePrefab;
-    public Transform feetPosition;
+    [SerializeField] private GameObject landingParticlePrefab;
+    [SerializeField] private Transform feetPosition;
 
     public void ApplyJump(Rigidbody rb)
     {

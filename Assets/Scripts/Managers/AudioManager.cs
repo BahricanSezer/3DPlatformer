@@ -4,11 +4,11 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
 
-    [Header("Ses Kaynaklarý")]
+    [Header("Audio Sources")]
     public AudioSource musicSource; 
     public AudioSource sfxSource;   
 
-    [Header("Ses Klipleri")]
+    [Header("Audio Clips")]
     public AudioClip backgroundMusic;
     public AudioClip jumpClip;
     public AudioClip checkpointClip;
@@ -17,7 +17,6 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
-        // Singleton Kurulumu
         if (instance == null)
         {
             instance = this;

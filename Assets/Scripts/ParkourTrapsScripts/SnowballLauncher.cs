@@ -3,11 +3,11 @@ using System.Collections;
 
 public class SnowballLauncher : MonoBehaviour
 {
-    [Header("Ayarlar")]
-    public GameObject snowballPrefab;
-    public Transform spawnPoint;
-    public float spawnInterval = 3f;
-    public float launchForce = 10f;
+    [Header("Settings")]
+    [SerializeField] private GameObject snowballPrefab;
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private float spawnInterval = 3f;
+    [SerializeField] private float launchForce = 10f;
 
     void Start()
     {
@@ -32,7 +32,7 @@ public class SnowballLauncher : MonoBehaviour
         Rigidbody rb = ball.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            // Fýrlatýcý nesnenin baktýðý yöne (Z ekseni) doðru fýrlatýr
+            // ÖNEMLÝ:Fýrlatýcý nesnenin baktýðý yöne doðru fýrlatýr
             rb.AddForce(spawnPoint.forward * launchForce, ForceMode.Impulse);
         }
     }

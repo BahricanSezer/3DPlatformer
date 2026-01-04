@@ -3,14 +3,14 @@ using UnityEngine.UI;
 
 public class DashSystem : MonoBehaviour
 {
-    [Header("Stamina Ayarlarý")]
+    [Header("Stamina Settings")]
     public Slider staminaSlider;
     public float maxStamina = 100f;
     public float dashCost = 50f;
     public float regenRate = 20f;
     public float smoothSpeed = 10f;
 
-    [Header("Dash Rüzgar Efekti")]
+    [Header("Dash UI Effect")]
     public Image dashWindImage; 
     public float windEffectFadeSpeed = 2f;
 

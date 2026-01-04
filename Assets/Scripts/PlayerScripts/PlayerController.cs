@@ -8,13 +8,13 @@ public class PlayerController : MonoBehaviour
     public Transform cam;
     public Animator animator;
 
-    [Header("Hareket Ayarları")]
-    public float moveSpeed = 6f;
-    public float diveSpeed = 50f;
-    public float turnSmoothTime = 0.1f;
+    [Header("Movement Settings")]
+    [SerializeField] private float moveSpeed = 6f;
+    [SerializeField] private float diveSpeed = 50f;
+    [SerializeField] private float turnSmoothTime = 0.1f;
 
-    [Header("Yerçekimi Ayarları")]
-    public float extraGravity = -20f;
+    [Header("Gravity Settings")]
+    [SerializeField] private float extraGravity = -20f;
 
     private Rigidbody rb;
     private bool isGrounded;

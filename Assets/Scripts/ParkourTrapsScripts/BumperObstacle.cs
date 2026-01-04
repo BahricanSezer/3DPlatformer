@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class BumperObstacle : MonoBehaviour
 {
-    [Header("�tme G�c� Ayar�")]
-    public float pushForce = 15f; 
+    [Header("Force Settings")]
+    [SerializeField] private float pushForce = 15f; 
 
-    [Header("Ses Efekti (Opsiyonel)")]
-    public AudioClip bumpSound; 
+    [Header("SFX")]
+    [SerializeField] private AudioClip bumpSound; 
 
     private void OnCollisionEnter(Collision collision)
     {

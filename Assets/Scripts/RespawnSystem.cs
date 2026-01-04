@@ -3,8 +3,8 @@ using UnityEngine;
 public class RespawnSystem : MonoBehaviour
 {
     [Header("Start Settings")]
-    public Transform startPoint; 
-    public float fallThreshold = -10f; 
+    public Transform startPoint;
+    [SerializeField] private float fallThreshold = -10f; 
 
     private Vector3 currentRespawnPosition;
     private Rigidbody rb;
@@ -34,7 +34,7 @@ public class RespawnSystem : MonoBehaviour
     public void SetNewCheckpoint(Vector3 newPos)
     {
         currentRespawnPosition = newPos;
-        Debug.Log("Checkpoint Al�nd�!"); 
+        Debug.Log("Checkpoint alındı!"); 
     }
 
     public void Respawn()
@@ -49,10 +49,8 @@ public class RespawnSystem : MonoBehaviour
             AudioManager.instance.PlaySFX(AudioManager.instance.deathClip);
         }
 
-        // Sahnedeki tüm FallingPlatform scriptlerini bul (Gizli olanlar dahil "true")
         FallingPlatform[] platforms = FindObjectsOfType<FallingPlatform>(true);
 
-        // Hepsine tek tek "Kendini sıfırla" emri ver
         foreach (FallingPlatform platform in platforms)
         {
             platform.ResetPlatform();

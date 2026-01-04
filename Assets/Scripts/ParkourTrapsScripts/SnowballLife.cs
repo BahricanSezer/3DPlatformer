@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SnowballLife : MonoBehaviour
 {
-    public float lifeTime = 5f;
+    [SerializeField] private float lifeTime = 5f;
 
     void Start()
     {

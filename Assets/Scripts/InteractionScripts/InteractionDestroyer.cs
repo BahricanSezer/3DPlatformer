@@ -2,19 +2,18 @@ using UnityEngine;
 
 public class InteractionManager : MonoBehaviour
 {
-    [Header("UI Referansý")]
-    public GameObject uiTextObject; // "Press E" yazýsý
+    [Header("UI Text")]
+    public GameObject uiTextObject;
 
-    [Header("Ýþlemler")]
-    public GameObject[] objectsToDestroy; // Tamamen yok olacaklar
-    public GameObject[] objectsToDisable; // Gizlenecekler (Active False)
-    public GameObject[] objectsToEnable;  // Görünür olacaklar (Active True)
+    [Header("Yapilanlar")]
+    [SerializeField] private GameObject[] objectsToDestroy;
+    [SerializeField] private GameObject[] objectsToDisable;
+    [SerializeField] private GameObject[] objectsToEnable;  
 
     private bool canInteract = false;
 
     void Start()
     {
-        // Oyun baþlayýnca yazýyý gizle
         if (uiTextObject != null)
             uiTextObject.SetActive(false);
     }
@@ -49,29 +48,23 @@ public class InteractionManager : MonoBehaviour
 
     void PerformInteraction()
     {
-        // 1. Objeleri Yok Et
         foreach (GameObject obj in objectsToDestroy)
         {
             if (obj != null) Destroy(obj);
         }
 
-        // 2. Objeleri Kapat (Active False)
         foreach (GameObject obj in objectsToDisable)
         {
             if (obj != null) obj.SetActive(false);
         }
 
-        // 3. Objeleri Aç (Active True)
         foreach (GameObject obj in objectsToEnable)
         {
             if (obj != null) obj.SetActive(true);
         }
-
-        // UI Yazýsýný kapat
         if (uiTextObject != null)
             uiTextObject.SetActive(false);
 
-        // Etkileþim bittiði için bu trigger objesini de yok et (Tek kullanýmlýk)
         Destroy(gameObject);
     }
 }

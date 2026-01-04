@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
 {
-    public Transform pointA;
-    public Transform pointB;
-    public float speed = 3f;
+    [SerializeField] private Transform pointA;
+    [SerializeField] private Transform pointB;
+    [SerializeField] private float speed = 3f;
 
     private Vector3 targetPos;
 

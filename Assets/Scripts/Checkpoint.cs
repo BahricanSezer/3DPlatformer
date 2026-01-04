@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    [Header("UI Ayarlarý")]
-    public GameObject uiTextPrefab; // Canvas uyumlu prefab gelecek
+    [Header("UI Settings")]
+    [SerializeField] private GameObject uiTextPrefab;
 
     private bool isActivated = false;
 
@@ -32,25 +32,20 @@ public class Checkpoint : MonoBehaviour
     {
         if (uiTextPrefab != null)
         {
-            // Sahnedeki Canvas'ý bul (Genelde ismi "Canvas" olur)
             GameObject canvas = GameObject.Find("Canvas");
 
             if (canvas != null)
             {
-                // Prefabý Canvas'ýn çocuðu olarak oluþtur (Yoksa ekranda görünmez)
                 GameObject textObj = Instantiate(uiTextPrefab, canvas.transform);
-
-                // Konumunu ayarla (0,0 yaparak ekranýn ortasýna veya prefabýn ayarlý yerine koyar)
-                // Eðer ekranýn biraz üstünde çýksýn istersen prefab ayarýndan Y deðerini artýrabilirsin.
                 RectTransform rect = textObj.GetComponent<RectTransform>();
                 if (rect != null)
                 {
-                    rect.anchoredPosition = new Vector2(0, 100); // Ekranýn ortasýndan biraz yukarýda baþlasýn
+                    rect.anchoredPosition = new Vector2(0, 100); 
                 }
             }
             else
             {
-                Debug.LogError("Sahnedeki 'Canvas' bulunamadý! Lütfen Canvas ismini kontrol et.");
+                Debug.LogError("Canvasý bulamadýmssssss");
             }
         }
     }
